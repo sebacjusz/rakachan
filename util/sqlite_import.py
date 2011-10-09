@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sqlite3, pymongo, sys, datetime, re
-
+from htmlentitydefs import entitydefs
 m_coll=pymongo.Connection().kara2.posts
 c=sqlite3.connect(sys.argv[1])
 c.text_factory=str
@@ -8,6 +8,7 @@ cur=c.cursor()
 mkdict = lambda p: dict( zip( ['id', 'thread', 'message', None, 'time', None, 'name'], p ) )
 pl = cur.execute('select * from posts')
 regexp=re.compile(r'(^>>(/\w+/)?(\d+))', flags=(re.MULTILINE|re.UNICODE))
+r_htent=re.compile(r'(&(\w+)\;)', flags=re.UNICODE)
 cnt=0
 while True:
     cnt+=1
@@ -23,13 +24,15 @@ while True:
     p['from_ca']=True
     try:
         if p['message']: 
+            for i in r_htent.findall(p['message']):
+                p['message'] = p['message'].replace(i[0], entitydefs[i[1]])
             for i in regexp.findall(p['message']):
                 if i[1]:
-                    p['message'].replace(i[0], u'>>/%s/%d/%d' % ( i[1], p['thread'], int(i[2]) ))
+                    p['message'] = p['message'].replace(i[0], u'>>/%s/%d/%d' % ( i[1], p['thread'], int(i[2]) ))
                 else:
-                    p['message'].replace(i[0], u'>>/%d/%d' % (p['thread'], int(i[2]) ))
+                    p['message'] = p['message'].replace(i[0], u'>>/%d/%d' % (p['thread'], int(i[2]) ))
     except TypeError:
-        print p
+        print 'ERR   ', p
     pr={}
     for k in p.keys():
         if k is not None:
