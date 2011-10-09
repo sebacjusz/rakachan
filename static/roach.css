@@ -1,0 +1,229 @@
+/*karachan.org
+*/
+
+html, body {
+	background:#FFFEED;
+      background-image: url('/bghead.png'), url('/roachtlo.png');
+      background-repeat: repeat-x, no-repeat;
+      background-attachment: fixed, fixed;
+	  background-position:top, right bottom;
+	color:#835B36;
+      font-family: sans-serif;
+      font-size: 90%;
+	background:   ;
+}
+a {
+	color:#888;
+	text-decoration: none;
+}
+a:hover {
+	color:#000;
+}
+.reflink a:hover{
+	font-weight: bold;
+}
+input, textarea {
+background-color: #fff;
+color: #000;
+border: 1px solid #CCC;
+}
+input:focus, textarea:focus
+{
+background-color: #fff;
+}
+.adminbar {
+	text-align:right;
+	clear:both;
+	float:right;
+	font-size: 13px;
+}
+.navbar {
+	font-size: 13px;
+}
+.logo {
+	clear:both;
+	text-align:center;
+	font-size:1.7em;
+	color:#455736;
+	width:100%;
+}
+.replymode {
+	background:#F3DBA7;
+	text-align:center;
+	padding:2px;
+	color:#835B36;
+	width:100%;
+}
+.catalogmode {
+	background:#0040E0;
+	text-align:center;
+	padding:2px;
+	color:#FFFFFF;
+	width:100%;
+}
+.postarea {
+        background:inherit;
+}
+.rules {
+	/*font-size:0.7em;*/
+	width: 468px;
+	font-size: 10px;
+	font-family: sans-serif;
+}
+.rules li {
+	margin-left: 1em;
+	/*text-indent: 0em;*/
+}
+.postblock {
+	background:#CDC8A3;
+	color:#455736;
+	font-weight:800;
+	text-align: left;
+	padding-left: 3px;
+	padding-right: 3px;
+	border: none;
+}
+.footer {
+	text-align:center;
+	font-size:12px;
+	font-family:serif;
+}
+.passvalid {
+	background:#F3DBA7;
+	text-align:center;
+	width:100%;
+	color:#ffffff;
+}
+.dellist {
+	font-weight: bold;
+	text-align:center;
+}
+.delbuttons {
+	text-align:center;
+	padding-bottom:4px;
+
+}
+.managehead {
+	background:#AAAA66;
+	color:#400000;
+	padding:0px;
+}
+.postlists {
+	background:#FFFFFF;
+	width:100%;
+	padding:0px;
+	color:#FFF;
+}
+.row1 {
+	background:#EEEECC;
+	color:#FFF;
+}
+.row2 {
+	background:#DDDDAA;
+	color:#FFF;
+}
+.unkfunc {
+	background:inherit;
+	color:#789922;
+}
+.filesize {
+	text-decoration:none;
+}
+.filetitle {
+	background:inherit;
+	font-size:1.2em;
+	color:#6D9E55;
+	font-weight:800;
+}
+.postername {
+	color:#117743;
+	font-weight:bold;
+}
+.postertrip {
+	color:#117743;
+}
+.oldpost {
+	color:#6D9E55;
+	font-weight:800;
+}
+.omittedposts {
+	color:#707070;
+}
+
+.reply {
+    background: rgba(210,140,0,0.3) !important;
+	color: #835B36;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 5px;
+}
+
+
+.replyhl {
+	background: #F0C0B0;
+	color: #FFF;
+}
+.doubledash {
+	vertical-align:top;
+	clear:both;
+	float:left;
+}
+.replytitle {
+	font-size: 1.0em;
+	color:#6D9E55;
+	font-weight:800;
+}
+.commentpostername {
+	color:#117743;
+	font-weight:800;
+}
+.thumbnailmsg {
+	font-size: small;
+	color:#FFF;
+}
+.abbrev {
+	color:#707070;
+}
+.highlight {
+	background:#F3DBA7;
+	color:#707070;
+	border: 2px dashed #707070;
+}
+#watchedthreads {
+	background-color: #F3DBa7 !important;
+}
+
+.hidethread {
+	background: transparent url('./icons/blueplus/icons.gif') -32px -16px no-repeat;
+}
+
+.unhidethread {
+	background: transparent url('./icons/blueplus/icons.gif') -48px 0px no-repeat;
+}
+
+.watchthread {
+	background: transparent url('./icons/blueplus/icons.gif') -32px 0px no-repeat;
+}
+
+.expandthread {
+	background: transparent url('./icons/blueplus/icons.gif') 0px -16px no-repeat;
+}
+
+.quickreply {
+	background: transparent url('./icons/blueplus/icons.gif') 0px 0px no-repeat;
+}
+
+.hidewatchedthreads {
+	background: transparent url('./icons/blueplus/icons.gif') -48px -16px no-repeat;
+}
+
+.refreshwatchedthreads {
+	background: transparent url('./icons/blueplus/icons.gif') -16px -16px no-repeat;
+}
+
+.restorewatchedthreads {
+	background: transparent url('./icons/blueplus/icons.gif') -16px 0px no-repeat;
+}
+.reflinkpreview {
+	background-color: #F3DBA7 !important;
+}
