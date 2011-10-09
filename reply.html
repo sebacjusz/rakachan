@@ -1,0 +1,63 @@
+<html><head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="img_global.css" />
+    <link rel="stylesheet" type="text/css" href="harrischan.css" />
+		    </head><body><table><tr>
+<td class="reply" id="reply{{post.id}}">
+	<a name="{{post.id}}"></a>
+	<label>
+	<input type="checkbox" name="post[]" value="{{post.id}}" />
+	{% if post.subject is defined %}
+		<span class="filetitle">
+			{{ post.subject }}
+		</span>
+	{% endif %}
+	<span class="postername">
+		{% if post.email is defined and board.anonymous is defined %}
+			<a href="mailto:{{post.email}}">
+		{% endif %}
+		{% if (post.name is undefined) and (post.tripcode is undefined) %}
+				{{ board.anonymous }}
+		{% else %}
+			{{ post.name }}
+		{% endif %}
+		{% if post.email is defined and board.anonymous is defined%}
+			</a>
+		{% endif %}
+	</span>
+	{% if post.tripcode %}
+		<span class="postertrip">!{{post.tripcode}}</span>
+	{% endif %}
+	{{post.time}}
+	</label>
+	<span class="reflink">
+		{{post.reflink}}
+	</span>
+	<span id="dnb-{{board.name}}-{{post.id}}-n"></span>
+	{% if (post.file or post.file_type) and ( post.file  and post.file != 'removed') %}
+		<br /><span class="filesize">
+			File
+			<a href="{{post.file}}.{{post.file_type}}" onclick="javascript:expandimg('{{post.id}}', '{{post.file}}.{{post.file_type}}', '/thumb/{{post.file}}.{{post.file_type}}', 'ni', 'ni', 'ni', 'ni');return false;">
+				{{post.file}}.{{post.file_type}}</a>
+			- (ni)
+		</span>
+
+	{% endif %}
+	
+	{% if post.file %}
+		<br />
+	{% if post.file == 'removed' %}
+	<div class="nothumb">
+		File<br />Removed
+	</div>
+	{% else %}
+		<a target="_blank" href="{{post.file}}.{{post.file_type}}">
+			<span id="thumb{{post.id}}"><img src="/thumb/{{post.file}}.{{post.file_type}}" alt="{{post.id}}" class="thumb" /></span>
+		</a>
+	{% endif %}
+	{% endif %}
+
+    <blockquote>
+    {{ post.message }}
+    </blockquote>
+    </td></table></body></html>

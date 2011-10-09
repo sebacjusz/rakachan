@@ -1,0 +1,69 @@
+{# vim: set filetype=htmldjango: #}
+{#
+{% if mode.board %}
+	{%extends 'board.html' %}
+{% else %}
+	{%extends 'outer.html' %}
+	{% block outer_header %} 
+		{{super()}}
+	{% endblock %}
+{%endif%}
+#}
+{% extends 'board.html' %}
+{# arg: thread_OP(post), replies(post list), board, mode #}
+{%block b_board %}
+{% if mode.board %}
+	 {{super()}}
+{%endif%}
+{%block b_thread %}
+{% for thrd in threads %}
+{% set thread_OP = thrd.OP %}
+{% set replies = thrd.replies %}
+{#	<div id="{{ u"thread{0}{1}".format(thread_OP.id, board.name) }}" >
+	unicode je kał, chujowy hack tiem #}
+<div id="{{ "thread%s" % thread_OP.id }}{{thread_OP.board}}">
+	{# file #}
+	<a name="{#{thread_OP.id}#}"></a>
+
+	<label>
+		<input type="checkbox" name="post[]" value="{#{thread_OP.id}#}" />
+		{% if thread_OP.subject %}
+			<span class="filetitle">
+				{{ thread_OP.subject }}
+			</span>
+		{% endif %}
+		<span class="postername">
+			{% if thread_OP.email %}
+				<a href="mailto:{{thread_OP.email}}">
+			{% endif %}
+			{% if (not thread_OP.name) and (not thread_OP.tripcode) %}
+					{{ config.anonymous }}
+			{% else %}
+				{{ thread_OP.name }}
+			{% endif %}
+			{% if thread_OP.email %}
+				</a>
+			{% endif %}
+		</span>
+		{% if thread_OP.trip %}
+			<span class="postertrip">!{{thread_OP.trip}}</span>
+		{% endif %}
+		{{thread_OP.time.strftime("%Y/%m/%d (%a) %H:%M")}}
+	</label>
+	<span class="reflink">
+		No. <a href="{{ '%s/thread/%s/%d' % (config.www_path, thread_OP.board, thread_OP.id) }}">{{thread_OP.id}}</a>
+		{% if mode.search %}
+		Temat: {{ '%s (OP)' % thread_OP.id if op.thread == 0 else thread_OP.thread }}
+		{%endif%}
+		<span id="dnb-{{thread_OP.board}}-{{thread_OP.id}}-n"></span>
+	</span>	
+	<blockquote>
+	{{ thread_OP.message.replace('\\"', '"').replace("\\'", "'") if thread_OP.message}}
+	</blockquote>
+	{# --------- REPLIES ----------- #}
+	{% set posts=replies %}
+	{% block thread_replies scoped %} {%endblock%}
+</div>
+{%endfor%}
+{%endblock b_thread %}
+{% endblock %}
