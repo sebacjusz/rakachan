@@ -9,7 +9,7 @@ j_env = Environment(loader=FileSystemLoader('./'), trim_blocks=True)
 db_conn = pymongo.Connection()
 posts_coll = db_conn.kara2.posts
 #txt_fields=['name', 'tripcode', 'email', 'subject', 'file', 'file_original', 'message']
-conf={'www_path':'/czan', 'anonymous': '[Anon]'}
+conf={'www_path':'', 'anonymous': '[Anon]'}
 
 app=Flask(__name__)
 app.debug=True
