@@ -1,16 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import cProfile
+#import cProfile
 #from os import path
-import time, urlparse, re
+import time, urlparse, re, sys
 from flup.server.fcgi import WSGIServer
 from jinja2 import Environment, FileSystemLoader
 import pymongo
-j_env = Environment(loader=FileSystemLoader('/anon/'), trim_blocks=True)
+j_env = Environment(loader=FileSystemLoader('./'), trim_blocks=True)
 db_conn = pymongo.Connection()
 posts_coll = db_conn.kara2.posts
 #txt_fields=['name', 'tripcode', 'email', 'subject', 'file', 'file_original', 'message']
-conf={'www_path':'/alfa', 'anonymous': '[Anon]'}
+conf={'www_path':'/czan', 'anonymous': '[Anon]'}
 
 def xlink_filter(msg, def_board):
     if not msg:
@@ -109,4 +109,9 @@ def myapp(environ, start_response):
 
 if __name__ == '__main__':
     #print >>log, "init"
-    cProfile.run('WSGIServer(myapp).run()', '/anon/prof')
+    #cProfile.run('WSGIServer(myapp).run()', '/anon/prof')
+    if len(sys.argv) > 1:
+        addr = (sys.argv[1], int(sys.argv[2]))
+    else:
+        addr = ('127.0.0.1', 9001)
+    WSGIServer(myapp, bindAddress=addr).run()
