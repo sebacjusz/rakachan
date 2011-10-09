@@ -34,9 +34,10 @@ while True:
     for k in p.keys():
         if k is not None:
             pr[k]=p[k]
-    if p['thread'] == p['id']:
+    if pr['thread'] == pr['id']:
         #m_coll.update( {'id':p['id'], 'thread':p['thread'], 'board':'b'}, { '$set': {'thread':0} } )
-        p['thread']=p['id']
+        #p['thread']=p['id']
+        pr['thread']=0
     m_coll.insert(pr)
     if cnt%2000==0:
         print '\r%f%%' % (cnt/475785.0)*100*100,
