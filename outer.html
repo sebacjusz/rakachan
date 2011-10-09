@@ -12,11 +12,11 @@
 {% endblock %}
 </head>
 <body>
-	<form method=get action=/alfa/search>
+	<form method=get action=/search>
 		<input type=text name=q value="{{search.q if mode.search}}" />
 		<input type=submit value=SZUKACZ />
 	</form>
-{% if mode.search %}
+{% if mode.search and search %}
 	<br> <b>{{search.count}}</b> postów znalezion'd{% if search.count  > 100 %}, 100 pierwszych wyników:{%endif%}
 {%endif%}
 {% endblock outer_header %}
