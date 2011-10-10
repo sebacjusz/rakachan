@@ -39,7 +39,7 @@
 			<a href="mailto:{{post.email}}">
 		{% endif %}
 		{% if (not post.name) and (not post.tripcode) %}
-				{{ config.anonymous }}
+				{{ config.ANONYMOUS }}
 		{% else %}
 			{{ post.name }}
 		{% endif %}
@@ -56,8 +56,8 @@
 		No. {{post.id}}
 		{%- if mode.search -%}
 		{% set thr_id =  post.id if post.thread==0 else post.thread %}
-		Temat: <a href="{{ '%s/board/%s' | format(config.www_path, post.board) }}">{{ '/%s/' |format(post.board) }}</a>
-		<a href="{{ '%s/thread/%s/%d' % (config.www_path, post.board, thr_id) }}">{{thr_id}}{{ '(OP)' if post.thread==0}}</a>
+		Temat: <a href="{{ '%s/board/%s' | format(config.WWW_PATH, post.board) }}">{{ '/%s/' |format(post.board) }}</a>
+		<a href="{{ '%s/thread/%s/%d' % (config.WWW_PATH, post.board, thr_id) }}">{{thr_id}}{{ '(OP)' if post.thread==0}}</a>
 		{%- endif -%}
 	</span>
 	<span id="dnb-{{post.board}}-{{post.id}}-n"></span>

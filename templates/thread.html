@@ -37,7 +37,7 @@
 				<a href="mailto:{{thread_OP.email}}">
 			{% endif %}
 			{% if (not thread_OP.name) and (not thread_OP.tripcode) %}
-					{{ config.anonymous }}
+					{{ config.ANONYMOUS }}
 			{% else %}
 				{{ thread_OP.name }}
 			{% endif %}
@@ -51,7 +51,7 @@
 		{{thread_OP.time.strftime("%Y/%m/%d (%a) %H:%M")}}
 	</label>
 	<span class="reflink">
-		No. <a href="{{ '%s/thread/%s/%d' % (config.www_path, thread_OP.board, thread_OP.id) }}">{{thread_OP.id}}</a>
+		No. <a href="{{ '%s/thread/%s/%d' % (config.WWW_PATH, thread_OP.board, thread_OP.id) }}">{{thread_OP.id}}</a>
 		{% if mode.search %}
 		Temat: {{ '%s (OP)' % thread_OP.id if op.thread == 0 else thread_OP.thread }}
 		{%endif%}
