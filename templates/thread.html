@@ -58,7 +58,7 @@
 		<span id="dnb-{{thread_OP.board}}-{{thread_OP.id}}-n"></span>
 	</span>	
 	<blockquote>
-	{{ thread_OP.message.replace('\\"', '"').replace("\\'", "'") if thread_OP.message}}
+	{{ thread_OP.message |fixquotes|mkxlink(thread_OP.board)|nl2br}}
 	</blockquote>
 	{# --------- REPLIES ----------- #}
 	{% set posts=replies %}

@@ -87,9 +87,6 @@
 	{% endif %}
 
     <blockquote>
-	{#
-	{{ post.message.replace('\\"', '"').replace("\\'", "'")  }}
-	#}
 	{{ post.message | mkxlink(post.board)|nl2br }}
     </blockquote>
     </td></tr>

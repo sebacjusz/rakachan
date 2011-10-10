@@ -28,7 +28,8 @@ def xlink_filter(msg, def_board):
         m = m.replace(orig, rr)
     return Markup(m)
 
-app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />'))
+app.jinja_env.filters['fixquotes']=lambda x: x.replace('\\"', '"').replace("\\'", "'") if x else None
+app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) if x else None
 
 @app.route('/search')
 def search1():
