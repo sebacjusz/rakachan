@@ -28,6 +28,15 @@ def xlink_filter(msg, def_board):
         m = m.replace(orig, rr)
     return Markup(m)
 
+@app.template_filter()
+def mk_unkfunc(msg):
+    if not msg:
+        return None
+    r_hl=re.compile(r'^(>\w.*)$', flags=re.MULTILINE|re.UNICODE)
+    for i in r_hl.findall(msg):
+        msg=msg.replace(i, Markup(u"<span class=unkfunc>%s</span>") % i)
+    return msg
+
 app.jinja_env.filters['fixquotes']=lambda x: x.replace('\\"', '"').replace("\\'", "'") if x else None
 app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) if x else None
 
