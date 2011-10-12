@@ -87,7 +87,7 @@
 	{% endif %}
 
     <blockquote>
-	{{ post.message | mkxlink(post.board)|mk_unkfunc|nl2br }}
+	{{ post.message |mk_unkfunc| mkxlink(post.board)|urlize|nl2br}}
     </blockquote>
     </td></tr>
 </table>

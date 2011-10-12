@@ -24,6 +24,7 @@ while True:
     p['from_ca']=True
     try:
         if p['message']: 
+            p['message'] = p['message'].replace('<br />', '\n').replace('\r', '')
             for i in r_htent.findall(p['message']):
                 p['message'] = p['message'].replace(i[0], entitydefs[i[1]])
             for i in regexp.findall(p['message']):
