@@ -50,7 +50,7 @@ def search1():
     else:
         postst=[]
         search=None
-    return render_template('post.html', posts=postst, mode={'search':1, 'wrap':1}, search=search)
+    return render_template('post.html', posts=postst, mode={'search':1}, search=search)
 
 @app.route('/post/<p_board>/<int:p_id>')
 def read_single(p_board, p_id):
@@ -65,7 +65,7 @@ def read_thread(t_board, t_id):
     if OP is None:
         return "<h1>404</h1><br> A thread with this id doesn't exist.", 404
     replies = posts_coll.find( {'board':t_board, 'thread':t_id} ).sort('id',1)
-    return render_template('post.html', threads=[{'OP':OP, 'replies':replies}], mode={'thread':1, 'wrap':1}, board={'name':t_board})
+    return render_template('post.html', threads=[{'OP':OP, 'replies':replies}], mode={'thread':1}, board={'name':t_board})
 
 @app.route('/board/<board>')
 def board(board):
