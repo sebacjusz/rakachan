@@ -50,6 +50,9 @@
 	<blockquote>
 	{{ thread_OP.message |mk_unkfunc| mkxlink(thread_OP.board)|urlize|nl2br}}
 	</blockquote>
+	<span class="omittedposts">
+		{{ thread_OP.ommited }} posts ommited.
+	</span>
 	{# --------- REPLIES ----------- #}
 	{% set posts=replies %}
 	{% block thread_replies scoped %} {%endblock%}

@@ -42,13 +42,16 @@ class DatabaseConnection(object):
         thr = self.posts_coll.find( {'board':board, 'thread':0} ).sort('id', -1).limit(per_page)
         def repgen(tl):
             for i in tl:
-                rep = self.posts_coll.find( {'board':board, 'thread': i['id']} ).sort('id', -1).limit(replies)
-                yield {'OP':self.__handle_html(i), 'replies':map(self.__handle_html,rep)}
+                r_tmp = self.posts_coll.find( {'board':board, 'thread': i['id']} ).sort('id', -1)
+                repcnt = r_tmp.count()
+                i['ommited']=repcnt
+                yield {'OP':self.__handle_html(i), 'replies':map(self.__handle_html,r_tmp.limit(100))}
         return repgen(thr)
     def search_regex(self, query, limit=100):
+        """returns a tuple of first `limit` search results and a number of total posts found"""
         res = self.posts_coll.find( { 'message' : { '$regex' : query } } ).limit(limit)
-        #sc = postst.count()
-        return map(self.__handle_html, res)
+        sc = res.count()
+        return ( map(self.__handle_html, res), sc)
 
 dbc = DatabaseConnection(app.config['MONGO_DB'])
 
@@ -76,8 +79,8 @@ app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />'))
 def search1():
     q=request.args.get('q')
     if q:
-        r = dbc.search_regex(q)
-        search={'count':len(r), 'q':q}
+        r,c = dbc.search_regex(q)
+        search={'count':c, 'q':q}
     else:
         r=[]
         search=None
