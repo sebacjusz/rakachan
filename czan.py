@@ -16,10 +16,14 @@ class DatabaseConnection(object):
         self.posts_coll=self.db.posts
     def __handle_html(self, post):
         """Disables jinja2's autoescaping for posts with raw_html set"""
-        if (not post) or (not post.get('message')) or (not post.get('raw_html')):
+        if not post:
+            return post
+        #We need to replace None with an empty string so jinja's urlize function doesn't repr() it
+        post['message']=post['message'] if post['message'] else ''
+        if not post.get('raw_html'):
             return post
         else:
-            post['message']=Markup(post['message'])
+            post['message']=Markup(post['message']) 
             return post
     def single(self, board, p_id):
         p = self.posts_coll.find_one( {'id' : p_id, 'board': board } ) 
@@ -50,8 +54,6 @@ dbc = DatabaseConnection(app.config['MONGO_DB'])
 
 @app.template_filter('mkxlink')
 def xlink_filter(msg, def_board):
-    if not msg:
-        return msg
     html = "<a onmouseover=\"ppv(this, '%s',%d)\" onmouseout=\"$('#preview').remove()\" href=\"%s\"> %s </a>" #board, id, content, link
     r_other=re.compile(r'(^>>>?(/\w+)?/(\d+)/(\d+).*)$', flags=(re.MULTILINE|re.UNICODE))
     for i in r_other.findall(msg):
@@ -63,15 +65,12 @@ def xlink_filter(msg, def_board):
 
 @app.template_filter()
 def mk_unkfunc(msg):
-    if not msg:
-        return msg
     r_hl=re.compile(r'^(>\w.*)$', flags=re.MULTILINE|re.UNICODE)
     for i in r_hl.findall(msg):
         msg=msg.replace(i, Markup(u"<span class=unkfunc>%s</span>") % i)
     return msg
 
-app.jinja_env.filters['fixquotes']=lambda x: x.replace('\\"', '"').replace("\\'", "'") if x else None
-app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) if x else None
+app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) 
 
 @app.route('/search')
 def search1():
