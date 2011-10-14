@@ -51,24 +51,20 @@ dbc = DatabaseConnection(app.config['MONGO_DB'])
 @app.template_filter('mkxlink')
 def xlink_filter(msg, def_board):
     if not msg:
-        return ''
+        return msg
     html = "<a onmouseover=\"ppv(this, '%s',%d)\" onmouseout=\"$('#preview').remove()\" href=\"%s\"> %s </a>" #board, id, content, link
-    r_other=re.compile(r'(^>>>?(/\w+)?/(\d+)/(\d+).*$)', flags=(re.MULTILINE|re.UNICODE))
-    m=msg
-    for i in r_other.findall(m):
+    r_other=re.compile(r'(^>>>?(/\w+)?/(\d+)/(\d+).*)$', flags=(re.MULTILINE|re.UNICODE))
+    for i in r_other.findall(msg):
         orig, board, thread, post = i
-        if not i[1]:
-            board=def_board
-        else:
-            board=board[1:]
+        board = board[1:] if board else def_board
         rr = html % (board, int(post), '%s/thread/%s/%d#%d' % ( app.config['WWW_PATH'], board, int(thread), int(post) ), orig )
-        m = m.replace(orig, Markup(rr))
-    return Markup(m)
+        msg = msg.replace(orig, Markup(rr))
+    return Markup(msg)
 
 @app.template_filter()
 def mk_unkfunc(msg):
     if not msg:
-        return None
+        return msg
     r_hl=re.compile(r'^(>\w.*)$', flags=re.MULTILINE|re.UNICODE)
     for i in r_hl.findall(msg):
         msg=msg.replace(i, Markup(u"<span class=unkfunc>%s</span>") % i)
@@ -79,7 +75,7 @@ app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) if 
 
 @app.route('/search')
 def search1():
-    q=request.args.get('q', '')
+    q=request.args.get('q')
     if q:
         r = dbc.search_regex(q)
         search={'count':len(r), 'q':q}
