@@ -100,12 +100,12 @@ def read_thread(t_board, t_id):
     thr = dbc.thread(t_board, t_id)
     if not thr:
         return "<h1>404</h1><br> A thread with this id doesn't exist.", 404
-    return render_template('post.html', threads=[{'OP':thr[0], 'replies':thr[1]}], mode={'thread':1}, board={'name':t_board})
+    return render_template('post.html', threads=[{'OP':thr[0], 'replies':thr[1]}], mode={'thread':1})
 
 @app.route('/board/<board>')
 def board(board):
     thr_l = dbc.board(board)
-    return render_template('post.html', b_threads=thr_l, mode={'board':1}, board={'name':board, 'anonymous':'Anone'})
+    return render_template('post.html', b_threads=thr_l, mode={'board':1})
 
 if __name__ == '__main__':
     if len(sys.argv) > 2:

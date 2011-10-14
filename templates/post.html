@@ -3,17 +3,7 @@
 {%extends 'thread.html' %}
 {%endif%}
 {# Note: At least one of mode.search, mode.single, mode.thread, mode.board must always be True #}
-{#
-{% if not (mode.single or mode.search) %}
-	{%extends 'thread.html' %}
-{% else %}
-	{%extends 'outer.html' %}
-	{% block outer_header %} 
-		{{super()}}
-	{% endblock %}
-{% endif %}
-#}
-{# arg: posts(post list), board[anon], mode[search], config[www_path] #}
+{# arg: posts(post list), mode[search], config[www_path] #}
 {% block b_thread %}
 {% if mode.thread or mode.board %}
 	 {{super()}} 

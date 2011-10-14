@@ -1,16 +1,6 @@
 {# vim: set filetype=htmldjango: #}
-{#
-{% if mode.board %}
-	{%extends 'board.html' %}
-{% else %}
-	{%extends 'outer.html' %}
-	{% block outer_header %} 
-		{{super()}}
-	{% endblock %}
-{%endif%}
-#}
 {% extends 'board.html' %}
-{# arg: thread_OP(post), replies(post list), board, mode #}
+{# arg: thread_OP(post), replies(post list), mode #}
 {%block b_board %}
 {% if mode.board %}
 	 {{super()}}
