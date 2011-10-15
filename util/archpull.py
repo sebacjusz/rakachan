@@ -12,7 +12,6 @@ def getpjson(time, dbg=0):
     if len(rr)<10:
         return None
     else:
-        #return json.loads(rr.replace("\\'", "\\\\'"))
         return json.loads(rr)
 
 def getbdict(dbg=0):
@@ -22,7 +21,7 @@ def getbdict(dbg=0):
     return dict([(int(i['id']),i['name']) for i in json.loads(rr)] ) #+ [(54, 'xD')])
 def convert_dict(src, bdict):
     #uid = 
-    ret = { 'message' : src['message'],
+    ret = { 'message' : src['message'].replace('<br />', '\n').replace('\r', ''),
             'id' : int(src['id']),
             'subject' : src['subject'],
             'email' : src['email'],
