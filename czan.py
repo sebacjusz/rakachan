@@ -14,28 +14,31 @@ class DatabaseConnection(object):
         self.connection = pymongo.Connection(host=host, port=port)
         self.db = self.connection[db]
         self.posts_coll=self.db.posts
-    def __handle_html(self, post):
-        """Disables jinja2's autoescaping for posts with raw_html set"""
+        self.board_info_c=self.db.boards
+    def __process_data(self, post):
         if not post:
             return post
+
+        if not app.config['USE_TIME_FIELD'] or not post.has_key('time'):
+            post['time'] = post['_id'].generation_time
         #We need to replace None with an empty string so jinja's urlize function doesn't repr() it
         post['message']=post['message'] if post['message'] else ''
         if not post.get('raw_html'):
             return post
         else:
-            post['message']=Markup(post['message']) 
+            post['message']=Markup(post['message'])
             return post
     def single(self, board, p_id):
-        p = self.posts_coll.find_one( {'id' : p_id, 'board': board } ) 
-        return self.__handle_html(p)
+        p = self.posts_coll.find_one( {'id' : p_id, 'board': board } )
+        return self.__process_data(p)
     def thread(self, board, t_id):
         """returns a tuple with the first post(OP) and a list of replies"""
         OP = self.posts_coll.find_one( {'board' : board, 'thread':0, 'id': t_id } )
         if not OP:
             return None
         replies = self.posts_coll.find( {'board':board, 'thread':t_id} ).sort('id',1)
-        OP=self.__handle_html(OP)
-        replies=map(self.__handle_html, replies)
+        OP=self.__process_data(OP)
+        replies=map(self.__process_data, replies)
         return (OP, replies)
     def board(self, board, per_page=15, replies=3):
         """returns a generator yielding `per_page` thread tuples (see thread()) with `replies` last replies"""
@@ -45,13 +48,13 @@ class DatabaseConnection(object):
                 r_tmp = self.posts_coll.find( {'board':board, 'thread': i['id']} ).sort('id', -1)
                 repcnt = r_tmp.count()
                 i['ommited']=repcnt
-                yield {'OP':self.__handle_html(i), 'replies':map(self.__handle_html,r_tmp.limit(100))}
+                yield {'OP':self.__process_data(i), 'replies':map(self.__process_data,r_tmp.limit(replies))}
         return repgen(thr)
     def search_regex(self, query, limit=100):
         """returns a tuple of first `limit` search results and a number of total posts found"""
         res = self.posts_coll.find( { 'message' : { '$regex' : query } } ).limit(limit)
         sc = res.count()
-        return ( map(self.__handle_html, res), sc)
+        return ( map(self.__process_data, res), sc)
 
 dbc = DatabaseConnection(app.config['MONGO_DB'])
 
@@ -73,7 +76,7 @@ def mk_unkfunc(msg):
         msg=msg.replace(i, Markup(u"<span class=unkfunc>%s</span>") % i)
     return msg
 
-app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />')) 
+app.jinja_env.filters['nl2br'] = lambda x: x.replace('\n', Markup('<br />'))
 
 @app.route('/search')
 def search1():
