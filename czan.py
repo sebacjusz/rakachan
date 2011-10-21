@@ -19,11 +19,7 @@ class DatabaseConnection(object):
         if not post:
             return post
 
-<<<<<<< HEAD
         if not app.config.get('USE_TIME_FIELD') or not post.has_key('time'):
-=======
-        if not app.config['USE_TIME_FIELD'] or not post.has_key('time'):
->>>>>>> 068b25f39db00422b3c7785beef9ab37cfa63327
             post['time'] = post['_id'].generation_time
         #We need to replace None with an empty string so jinja's urlize function doesn't repr() it
         post['message']=post['message'] if post['message'] else ''
