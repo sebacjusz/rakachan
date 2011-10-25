@@ -57,6 +57,7 @@
 	{% set posts=replies %}
 	{% block thread_replies scoped %} {%endblock%}
 </div>
+{{ super() }}
 {%endfor%}
 {%endblock b_thread %}
 {% endblock %}
