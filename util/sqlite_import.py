@@ -1,7 +1,7 @@
 #!/usr/bin/python
-import sqlite3, pymongo, sys, datetime, re
+import sqlite3, pymongo, sys, datetime, re, os
 from htmlentitydefs import entitydefs
-m_coll=pymongo.Connection().kara2.posts
+m_coll=pymongo.Connection()[sys.argv[2]].posts
 c=sqlite3.connect(sys.argv[1])
 c.text_factory=str
 cur=c.cursor()
@@ -26,7 +26,12 @@ while True:
         if p['message']: 
             p['message'] = p['message'].replace('<br />', '\n').replace('\r', '')
             for i in r_htent.findall(p['message']):
-                p['message'] = p['message'].replace(i[0], entitydefs[i[1]])
+                try:
+                    eent=entitydefs[i[1]].decode('latin-1')
+                    p['message'] = p['message'].replace(i[0], eent)
+                except UnicodeDecodeError:
+                    print repr(i[1]), repr(entitydefs[i[1]])
+                    os.abort()
             for i in regexp.findall(p['message']):
                 if i[1]:
                     p['message'] = p['message'].replace(i[0], u'>>/%s/%d/%d' % ( i[1], p['thread'], int(i[2]) ))
@@ -39,8 +44,6 @@ while True:
         if k is not None:
             pr[k]=p[k]
     if pr['thread'] == pr['id']:
-        #m_coll.update( {'id':p['id'], 'thread':p['thread'], 'board':'b'}, { '$set': {'thread':0} } )
-        #p['thread']=p['id']
         pr['thread']=0
     m_coll.insert(pr)
     if cnt%2000==0:
