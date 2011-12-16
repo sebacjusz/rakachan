@@ -45,7 +45,7 @@ def batch_insert(lastupd):
         l = [convert_dict(i, bt) for i in getpdata(lastupd, dbg=1)]
         r = dbinsert(l)
         print "inserted %d of %d" % (len(r), len(l))
-        if len(l)>100:
+        if len(l)<100:
             break
         else:
             lastupd = int( time.mktime( max( [i['time'] for i in l] ).timetuple() ) )
