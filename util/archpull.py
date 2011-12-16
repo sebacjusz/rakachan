@@ -10,7 +10,7 @@ def getpjson(time, dbg=0):
     if dbg: print "open:", url
     rr = urllib.urlopen(url).read()
     if len(rr)<10:
-        return None
+        return []
     else:
         return json.loads(rr)
 
@@ -43,11 +43,10 @@ def batch_insert(lastupd):
     bt = getbdict()
     print "bd:", ', '.join(["%s:%s" % (i, bt[i]) for i in bt.keys()])
     while True:
-        #l = map(convert_dict, getpjson(lastupd))
         l = [convert_dict(i, bt) for i in getpjson(lastupd, dbg=1)]
         r = dbinsert(l)
         print "inserted %d of %d" % (len(r), len(l))
-        if len(l)>100:
+        if len(l)<100:
             break
         else:
             lastupd = int( time.mktime( max( [i['time'] for i in l] ).timetuple() ) )
